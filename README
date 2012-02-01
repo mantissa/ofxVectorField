@@ -1,0 +1,15 @@
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+
+ofxVectorField
+
+A vector field creator and animator for openFrameworks.cc
+
+- creates vector fields from existing color and grayscale images
+- creates vector fields randomly using perlin noise
+- animates vector fields using perlin noise
+- used to animate particles
+
+by Jeremy Rotsztain 
+
+http://www.mantissa.ca
