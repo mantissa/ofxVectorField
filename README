@@ -3,7 +3,7 @@
 
 ofxVectorField
 
-A vector field creator and animator for openFrameworks.cc
+A vector field generator and animator for openFrameworks.cc
 
 - creates vector fields from existing color and grayscale images
 - creates vector fields randomly using perlin noise
