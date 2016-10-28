@@ -1,6 +1,6 @@
 
 #include "ofxVectorField.h"
-#include "testApp.h"
+#include "ofApp.h"
 
 // -----------------------------------------------------------------
 // ofxVectorField()
@@ -95,7 +95,8 @@ void ofxVectorField::draw(){
 			int startX = x * spacing;
 			int startY = y * spacing;
 			
-			ofLine(startX, startY, startX+vectorField[pos].x*spacing, startY+vectorField[pos].y*spacing);
+            ofDrawLine(startX, startY, startX+vectorField[pos].x*spacing, startY+vectorField[pos].y*spacing);
+			//ofLine(startX, startY, startX+vectorField[pos].x*spacing, startY+vectorField[pos].y*spacing);
 		}
 	}
 	
@@ -154,8 +155,8 @@ ofVec2f ofxVectorField::getVectorInterpolated(int x, int y, int gridW, int gridH
 
 void ofxVectorField::setFromImage(ofImage & image){
 
-	int imgW = image.width;
-	int imgH = image.height;
+    int imgW = image.getWidth();
+    int imgH = image.getHeight();
 	int imgPixelCount = imgW * imgH;
 	
 	if( !bIsAllocated){
@@ -168,7 +169,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 	unsigned char * imagePixels = image.getPixels();
 	unsigned char brightness[imgPixelCount];
 	
-	if( image.getPixelsRef().getImageType() == OF_IMAGE_GRAYSCALE){
+	if( image.getPixels().getImageType() == OF_IMAGE_GRAYSCALE){
 		
 		for(int x=0; x<imgW; x++){
 			for(int y=0; y<imgH; y++){
@@ -186,7 +187,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 		// convert RGB to luma
 		unsigned char * imagePixels = image.getPixels();
 		unsigned char brightness[imgPixelCount];
-		int bpp = image.getPixelsRef().getBytesPerPixel();
+		int bpp = image.getPixels().getBytesPerPixel();
 		
 		for(int x=0; x<imgW; x++){
 			for(int y=0; y<imgH; y++){
@@ -488,7 +489,8 @@ void ofxVectorField::blur(){
 
 	int vectorCount = width * height;
 	
-	ofVec2f tmpArray[vectorCount];
+	//ofVec2f tmpArray[vectorCount];
+    vector<ofVec2f> tmpArray;
 	
 	float blurVals[] =  {
 	
@@ -501,8 +503,14 @@ void ofxVectorField::blur(){
 	
 	for(int i=0; i<9; i++) blurTotal += blurVals[i];
 	
-	for(int i=0; i<vectorCount; i++) tmpArray[i].set(0, 0);
-	
+
+    for(int i=0; i<vectorCount; i++){
+        ofVec2f tmp = ofVec2f(0, 0);
+        tmpArray.push_back(tmp);
+    }
+
+    
+    
 	for(int x=1; x<width-1; x++){
 		for(int y=1; y<height-1; y++){
 	
@@ -514,17 +522,23 @@ void ofxVectorField::blur(){
 					int srcPos = (y + j) * width + x + i;
 					int arrayPos = (j + 1) * 3 + i + 1;
 					
-					tmpArray[dstPos] += vectorField[srcPos] * blurVals[arrayPos];
+                    tmpArray.at(dstPos) += vectorField[srcPos] * blurVals[arrayPos];
+					//tmpArray[dstPos] += vectorField[srcPos] * blurVals[arrayPos];
 				}
 			}
 		}
 	}
-	
+	/*
 	for(int x = 0; x<width; x++) tmpArray[x] = vectorField[x];
 	for(int x = 0; x<width; x++) tmpArray[(height-1)*width+x] = vectorField[(height-1)*width+x];
 	for(int y = 0; y<height; y++) tmpArray[y*width] = vectorField[y*width];
 	for(int y = 0; y<height; y++) tmpArray[y*width+width-1] = vectorField[y*width+width-1];
-	
+	*/
+    for(int x = 0; x<width; x++) tmpArray.at(x)= vectorField[x];
+    for(int x = 0; x<width; x++) tmpArray.at((height-1)*width+x) = vectorField[(height-1)*width+x];
+    for(int y = 0; y<height; y++) tmpArray.at(y*width) = vectorField[y*width];
+    for(int y = 0; y<height; y++) tmpArray.at(y*width+width-1) = vectorField[y*width+width-1];
+    
 	for(int i=0; i<vectorCount; i++) { 
 		
 		vectorField[i] = tmpArray[i] / blurTotal;
