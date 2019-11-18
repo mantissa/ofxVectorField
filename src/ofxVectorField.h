@@ -11,7 +11,7 @@
 
 #include "ofMain.h"
 
-#define OFX_VECFIELD_DEFALT_SPACING			5
+#define OFX_VECFIELD_DEFAULT_SPACING			5
 
 class ofxVectorField {
 	

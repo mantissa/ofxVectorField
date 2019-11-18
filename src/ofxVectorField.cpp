@@ -162,7 +162,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 	if( !bIsAllocated){
 		
 		printf("ofxVectorField not allocated -- allocating automatically using default spacing\n");
-		setup(imgW, imgH, OFX_VECFIELD_DEFALT_SPACING);
+		setup(imgW, imgH, OFX_VECFIELD_DEFAULT_SPACING);
 	}
 	
 	// storage for brightness
