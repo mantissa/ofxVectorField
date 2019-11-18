@@ -31,7 +31,7 @@ void ofApp::update(){
     if( ofGetFrameNum() % 10 == 0 && particles.size() < 300 ){
         
         Particle newParticle;
-        ofVec2f pos( ofGetWidth()/2 + ofRandom( -200, 200), ofGetHeight()/2 + ofRandom( -200, 200));
+        glm::vec2 pos( ofGetWidth()/2 + ofRandom( -200, 200), ofGetHeight()/2 + ofRandom( -200, 200));
         newParticle.setup(pos);
         particles.push_back(newParticle);
     }

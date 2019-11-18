@@ -14,14 +14,14 @@ class Particle {
 public:
     
     
-    void setup(ofVec2f startPos);
-    void move(ofVec2f dir);
+    void setup(glm::vec2 startPos);
+    void move(glm::vec2 dir);
     void draw();
     void stayOnScreen();
     bool isOffScreen();
     bool isDead();
     
-    ofVec2f pos;
+    glm::vec2 pos;
     int duration;
     
 };

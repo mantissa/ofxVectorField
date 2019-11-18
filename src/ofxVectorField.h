@@ -11,7 +11,7 @@
 
 #include "ofMain.h"
 
-#define OFX_VECFIELD_DEFALT_SPACING			5
+#define OFX_VECFIELD_DEFAULT_SPACING			5
 
 class ofxVectorField {
 	
@@ -32,8 +32,8 @@ public:
 	void animate(float speed = 0.002);
 	
 	// getting values from the vector field
-	ofVec2f getVector(int x, int y);
-	ofVec2f getVectorInterpolated(int x, int y, int gridW, int gridH);
+	glm::vec2 getVector(int x, int y);
+	glm::vec2 getVectorInterpolated(int x, int y, int gridW, int gridH);
 	
 	// adjusting the vector field
 	void normalize(bool individually=false);
@@ -42,13 +42,13 @@ public:
 	void bias(float amt);
 	void bias(float xAmt, float yAmt);
 	void blur();
-	void smudge(ofVec2f pos, ofVec2f vector);
+	void smudge(glm::vec2 pos, glm::vec2 vector);
 	
 	int width, height;
 	
 private:
 
-	ofVec2f * vectorField;
+	glm::vec2 * vectorField;
 
 	int spacing;
 	int numElements;

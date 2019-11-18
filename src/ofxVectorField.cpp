@@ -47,7 +47,7 @@ void ofxVectorField::setup(int w, int h, int spac){
 		
 		//printf("allocating!\n");
 		
-		vectorField = new ofVec2f[numVectors];
+		vectorField = new glm::vec2[numVectors];
 		
 		bIsAllocated = true;
 	
@@ -108,7 +108,7 @@ void ofxVectorField::draw(){
 // get the vector at a certain position in the vector field
 // -----------------------------------------------------------------
 
-ofVec2f ofxVectorField::getVector(int x, int y){
+glm::vec2 ofxVectorField::getVector(int x, int y){
 	
 	int pos = y * width + x;
 	
@@ -124,9 +124,9 @@ ofVec2f ofxVectorField::getVector(int x, int y){
 // @param gridH - the height of the particle world (usually ofGetHeight())
 // -----------------------------------------------------------------
 
-ofVec2f ofxVectorField::getVectorInterpolated(int x, int y, int gridW, int gridH){
+glm::vec2 ofxVectorField::getVectorInterpolated(int x, int y, int gridW, int gridH){
 	
-	ofVec2f newVector;
+	glm::vec2 newVector(0);
 	
 	float pctX = float(x)/gridW;
 	float pctY = float(y)/gridH;
@@ -162,11 +162,11 @@ void ofxVectorField::setFromImage(ofImage & image){
 	if( !bIsAllocated){
 		
 		printf("ofxVectorField not allocated -- allocating automatically using default spacing\n");
-		setup(imgW, imgH, OFX_VECFIELD_DEFALT_SPACING);
+		setup(imgW, imgH, OFX_VECFIELD_DEFAULT_SPACING);
 	}
 	
 	// storage for brightness
-	unsigned char * imagePixels = image.getPixels();
+	unsigned char * imagePixels = image.getPixels().getData();
 	unsigned char brightness[imgPixelCount];
 	
 	if( image.getPixels().getImageType() == OF_IMAGE_GRAYSCALE){
@@ -185,7 +185,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 	} else {
 		
 		// convert RGB to luma
-		unsigned char * imagePixels = image.getPixels();
+		unsigned char * imagePixels = image.getPixels().getData();
 		unsigned char brightness[imgPixelCount];
 		int bpp = image.getPixels().getBytesPerPixel();
 		
@@ -354,7 +354,8 @@ void ofxVectorField::normalize( bool individually){
 		// adjust on a vector by vector basis
 		for(int i=0; i<numVectors; i++){
 			
-			vectorField[i].normalize();
+//			vectorField[i].normalize();
+            glm::normalize(vectorField[i]);
 		}
 		
 	} else {
@@ -490,7 +491,7 @@ void ofxVectorField::blur(){
 	int vectorCount = width * height;
 	
 	//ofVec2f tmpArray[vectorCount];
-    vector<ofVec2f> tmpArray;
+    vector<glm::vec2> tmpArray;
 	
 	float blurVals[] =  {
 	
@@ -505,7 +506,7 @@ void ofxVectorField::blur(){
 	
 
     for(int i=0; i<vectorCount; i++){
-        ofVec2f tmp = ofVec2f(0, 0);
+        glm::vec2 tmp = glm::vec2(0, 0);
         tmpArray.push_back(tmp);
     }
 
@@ -552,7 +553,7 @@ void ofxVectorField::blur(){
 // @param mouseVector - direction of smudge
 // -----------------------------------------------------------------
 
-void ofxVectorField::smudge(ofVec2f mousePos, ofVec2f mouseVec){
+void ofxVectorField::smudge(glm::vec2 pos, glm::vec2 vector){
 
 	int smudgeSize = 3;
 	//float smudgeStep = 1.0/(smudgeSize*2);
@@ -564,8 +565,8 @@ void ofxVectorField::smudge(ofVec2f mousePos, ofVec2f mouseVec){
 			
 			//if( i + x / vecFieldSpacing > 0 && i + x / vecFieldSpacing < vecFieldW){
 			
-			int xPos = int(mousePos.x)/spacing+i;
-			int yPos = int(mousePos.y)/spacing+j;
+			int xPos = int(pos.x)/spacing+i;
+			int yPos = int(pos.y)/spacing+j;
 			int pos =  yPos * width + xPos;
 			
 			float dist = sqrt(i*i + j*j);
@@ -576,8 +577,8 @@ void ofxVectorField::smudge(ofVec2f mousePos, ofVec2f mouseVec){
 				
 				//printf("pos %i - %i %i\n", pos, xPos, yPos);
 				
-				vectorField[pos].x = mouseVec.x * pct + vectorField[pos].x * (1.0 - pct);
-				vectorField[pos].y = mouseVec.y * pct + vectorField[pos].y * (1.0 - pct);
+				vectorField[pos].x = vector.x * pct + vectorField[pos].x * (1.0 - pct);
+				vectorField[pos].y = vector.y * pct + vectorField[pos].y * (1.0 - pct);
 				
 			}
 			

@@ -8,12 +8,12 @@
 
 #include "Particle.h"
 
-void Particle::setup(ofVec2f startPos){
+void Particle::setup(glm::vec2 startPos){
     pos = startPos;
     duration = 0;
 }
 
-void Particle::move(ofVec2f dir){
+void Particle::move(glm::vec2 dir){
     pos += dir;
 }
 
