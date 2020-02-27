@@ -167,7 +167,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 	
 	// storage for brightness
 	unsigned char * imagePixels = image.getPixels().getData();
-	unsigned char brightness[imgPixelCount];
+	unsigned char* brightness = new unsigned char[imgPixelCount];
 	
 	if( image.getPixels().getImageType() == OF_IMAGE_GRAYSCALE){
 		
@@ -186,7 +186,7 @@ void ofxVectorField::setFromImage(ofImage & image){
 		
 		// convert RGB to luma
 		unsigned char * imagePixels = image.getPixels().getData();
-		unsigned char brightness[imgPixelCount];
+		unsigned char* brightness = new unsigned char[imgPixelCount];
 		int bpp = image.getPixels().getBytesPerPixel();
 		
 		for(int x=0; x<imgW; x++){
